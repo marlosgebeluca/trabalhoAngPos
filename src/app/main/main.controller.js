@@ -12,38 +12,72 @@
     $scope.pesquisar = function(){
       let url;
       let query;
-      let pesquisar = false;
-      $scope.exibir = false;
+      let pesquisarUsuario = false;
+      $scope.exibirUsu = false;
+      $scope.exbirRepo = false;
+      $scope.exbirRepousu = false;
       $scope.itens = [];
       
-      if($scope.tipoPesquisa == 'Usuário'){
+      if($scope.tipoPesquisa === 'Usuário'){
         if($scope.usuario !== '' && $scope.usuario !== undefined){
-          query = $scope.usuario;
-          url = 'https://api.github.com/search/users?q='+query;
-          
-          pesquisar = true;
+          GithubUserSearch.get({
+            q: $scope.usuario
+          }, function(data) {
+            console.log(data);
+            $scope.itens = data.items;
+            $scope.exibirUsu = true;
+            $scope.exbirRepo = false;
+            $scope.exbirRepousu = false;
+          });
         }else{
-          toastr.error('Informe algo para buscar', 'Erro');
+          toastr.error('Informe o campo para busca', 'Erro');
         }
-      }else if($scope.tipoPesquisa == 'Repositório'){
+      }else if($scope.tipoPesquisa === 'Repositório'){
+        if($scope.repositorio !== '' && $scope.repositorio !== undefined){
+          Github.get({
+            q: $scope.repositorio
+          }, function(data) {
+            console.log(data);
+            $scope.itens = data.items;
+            $scope.exbirRepo = true;
+            $scope.exibirUsu = false;
+            $scope.exbirRepousu = false;
+          });
+        }else{
+          toastr.error('Informe o campo para busca', 'Erro');
+        }
+      }else if($scope.tipoPesquisa === 'Repositório do usuário'){
+        if(($scope.usuario !== '' && $scope.usuario !== undefined) && ($scope.repositorio !== '' && $scope.repositorio !== undefined)){
+          GithubUserRepository.get({
+            username: $scope.usuario,
+            repo: $scope.repositorio
+          }, function(data) {
+            console.log(data);
+            $scope.itens = data.items;
+            $scope.exbirRepousu = true;
+            $scope.exibirUsu = false;
+            $scope.exbirRepo = false;
+          });
         
+        }else if(($scope.usuario !== '' && $scope.usuario !== undefined) && ($scope.repositorio === '' || $scope.repositorio === undefined)){
+          GithubUser.query({
+            username: $scope.usuario
+          }, function(data) {
+            console.log(data);
+            $scope.itens = data.items;
+            $scope.exbirRepousu = true;
+            $scope.exibirUsu = false;
+            $scope.exbirRepo = false;
+          });
+        }else{
+          toastr.error('Informe os campos para buscar', 'Erro');
+        }
       }else{
         toastr.error('Selecione um tipo de pesquisa', 'Erro');
-      }
-
-      if(pesquisar){
-        $http.get(url).success(function (data) {
-          console.log(data.items);
-          toastr.success('Registros encontrados '+data.items.length, 'Sucesso!');
-          
-          $scope.itens = data.items;
-          $scope.exibir = true;
-        });
       }
     };
 
     // toastr.success('Hello world!', 'Toastr fun!');
     // toastr.info('We are open today from 10 to 22', 'Information');
-
   }
 })();

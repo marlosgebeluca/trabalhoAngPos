@@ -14,15 +14,16 @@
         controller: 'MainController',
         controllerAs: 'vm'
       })
-      .state('details', {
-        url: '/details/:cep',
-        templateUrl: 'app/details/details.html',
-        controller: 'DetailsController'
+      .state('github', {
+        url: '/github',
+        templateUrl: 'app/github/github.html',
+        controller: 'GitHubController',
+        controllerAs: 'vm'
       })
-      .state('raffle', {
-        url: '/sorteio',
-        templateUrl: 'app/raffle/raffle.html',
-        controller: 'RaffleController',
+      .state('githubDetais', {
+        url: '/githubDetais',
+        templateUrl: 'app/github/githubDetais.html',
+        controller: 'GitHubController',
         controllerAs: 'vm'
       });
 

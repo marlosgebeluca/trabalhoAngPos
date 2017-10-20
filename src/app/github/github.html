@@ -1,9 +1,49 @@
-<div class="col-lg-12 large-container"
-style="height: 300px; background: red"
-background="https://www.w3schools.com/angular/pic_angular.jpg">
-  <h1>Titulo</h1>
+<div class="container">
+  <form>
+    <div class="form-group">
+      <label for="sel1">Buscar Por:</label>
+      <select class="form-control" ng-model="tipoPesquisa">
+        <option>Usuário</option>
+        <option>Repositório</option>
+        <option>Repositório do usuário</option>
+      </select>
+    </div>
 
-  <h3>Mensagem</h3>
-  <name-printer-test eq="vm.eq" at="{{vm.at}}" and="vm.and"></name-printer-test>
-    <!-- <uib-pagination total-items="100" ng-model="vm.page" items-per-page="20" previous-text="anterior" next-text="proximo"></uib-pagination> -->
+    <div class="form-group">
+      <label for="usr">Usuario:</label>
+      <input type="text" class="form-control"  ng-model="usuario">
+    </div>
+
+    <div class="form-group">
+      <label for="usr">Repositorio:</label>
+      <input type="text" class="form-control"  ng-model="repositorio">
+    </div>
+
+    <button type="button" class="btn btn-primary" ng-click="pesquisar()">Pesquisar</button>
+  </form>
+  <br><br>
+
+  <div class="row" relacao> </div>
+
+  <div ng-if="exibirUsu">
+    <ul ng-repeat="obj in itens">
+      <li> {{obj.login}} </li>
+    </ul>
+  </div>
+
+  <div ng-if="exbirRepo">
+    <ul ng-repeat="obj in itens">
+      <li> {{obj.name}} </li>
+    </ul>
+  </div>
+
+  <div ng-if="exbirRepousu">
+    <ul ng-repeat="obj in itens">
+      <li> {{obj.name}}</li>
+    </ul>
+  </div>
+
+  <div ng-if="exbirRepousu2">
+    {{itens.name}}
+  </div>
 </div>
